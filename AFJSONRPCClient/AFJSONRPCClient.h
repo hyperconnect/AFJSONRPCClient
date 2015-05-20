@@ -28,7 +28,9 @@
  
  @see http://www.jsonrpc.org/specification
  */
-@interface AFJSONRPCClient : AFHTTPRequestOperationManager
+@interface AFJSONRPCClient : AFHTTPRequestOperationManager {
+    NSInteger autoIncrementId;
+}
 
 /**
  The endpoint URL for the webservice.
@@ -118,6 +120,7 @@
  */
 - (id)proxyWithProtocol:(Protocol *)protocol;
 
+- (NSNumber*)getAutoIncrementId;
 @end
 
 ///----------------

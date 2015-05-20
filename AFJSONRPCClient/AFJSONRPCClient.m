@@ -1,5 +1,5 @@
 // AFJSONRPCClient.m
-// 
+//
 // Created by wiistriker@gmail.com
 // Copyright (c) 2013 JustCommunication
 //
@@ -9,10 +9,10 @@
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -62,6 +62,11 @@ static NSString * AFJSONRPCLocalizedErrorMessageForCode(NSInteger code) {
     return [[self alloc] initWithEndpointURL:URL];
 }
 
+- (NSNumber*) getAutoIncrementId {
+    autoIncrementId += 1;
+    return [[NSNumber alloc] initWithInteger:autoIncrementId];
+}
+
 - (id)initWithEndpointURL:(NSURL *)URL {
     NSParameterAssert(URL);
 
@@ -92,7 +97,8 @@ static NSString * AFJSONRPCLocalizedErrorMessageForCode(NSInteger code) {
              success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
              failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
 {
-    [self invokeMethod:method withParameters:parameters requestId:@(1) success:success failure:failure];
+    NSNumber* requestId = [self getAutoIncrementId];
+    [self invokeMethod:method withParameters:parameters requestId:requestId success:success failure:failure];
 }
 
 - (void)invokeMethod:(NSString *)method
@@ -119,7 +125,7 @@ static NSString * AFJSONRPCLocalizedErrorMessageForCode(NSInteger code) {
     NSAssert([parameters isKindOfClass:[NSDictionary class]] || [parameters isKindOfClass:[NSArray class]], @"Expect NSArray or NSDictionary in JSONRPC parameters");
 
     if (!requestId) {
-        requestId = @(1);
+        requestId = [self getAutoIncrementId];
     }
 
     NSMutableDictionary *payload = [NSMutableDictionary dictionary];
@@ -146,12 +152,7 @@ static NSString * AFJSONRPCLocalizedErrorMessageForCode(NSInteger code) {
             id result = responseObject[@"result"];
             id error = responseObject[@"error"];
 
-            if (result && result != [NSNull null]) {
-                if (success) {
-                    success(operation, result);
-                    return;
-                }
-            } else if (error && error != [NSNull null]) {
+            if (error && error != [NSNull null]) {
                 if ([error isKindOfClass:[NSDictionary class]]) {
                     if (error[@"code"]) {
                         code = [error[@"code"] integerValue];
@@ -168,7 +169,10 @@ static NSString * AFJSONRPCLocalizedErrorMessageForCode(NSInteger code) {
                     message = NSLocalizedStringFromTable(@"Unknown Error", @"AFJSONRPCClient", nil);
                 }
             } else {
-                message = NSLocalizedStringFromTable(@"Unknown JSON-RPC Response", @"AFJSONRPCClient", nil);
+                if (success) {
+                    success(operation, result);
+                    return;
+                }
             }
         } else {
             message = NSLocalizedStringFromTable(@"Unknown JSON-RPC Response", @"AFJSONRPCClient", nil);
@@ -247,7 +251,7 @@ typedef void (^AFJSONRPCProxyFailureBlock)(NSError *error);
     [invocation getArgument:&arguments atIndex:2];
     [invocation getArgument:&unsafeSuccess atIndex:3];
     [invocation getArgument:&unsafeFailure atIndex:4];
-    
+
     [invocation invokeWithTarget:nil];
 
     __strong AFJSONRPCProxySuccessBlock strongSuccess = [unsafeSuccess copy];
