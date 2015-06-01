@@ -21,9 +21,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import <AFNetworking/AFNetworking.h>
 #import "AFJSONRPCClient.h"
-#import "AFHTTPRequestOperation.h"
-
 #import <objc/runtime.h>
 
 NSString * const AFJSONRPCErrorDomain = @"com.alamofire.networking.json-rpc";
