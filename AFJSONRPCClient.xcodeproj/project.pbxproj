@@ -7,34 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2C890B671B1C2CF700CD7013 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C890B601B1C2CCC00CD7013 /* AFNetworking.framework */; };
 		FB828DC21B0DEB3C00D4A2E2 /* AFJSONRPCClient.h in Headers */ = {isa = PBXBuildFile; fileRef = FB828DC01B0DEB3C00D4A2E2 /* AFJSONRPCClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FB828DC31B0DEB3C00D4A2E2 /* AFJSONRPCClient.m in Sources */ = {isa = PBXBuildFile; fileRef = FB828DC11B0DEB3C00D4A2E2 /* AFJSONRPCClient.m */; };
+		FBC229931B1DACBF009973D8 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBC229921B1DACB5009973D8 /* AFNetworking.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		2C890B5F1B1C2CCC00CD7013 /* PBXContainerItemProxy */ = {
+		FBC229911B1DACB5009973D8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 2C890B5B1B1C2CCC00CD7013 /* AFNetworking.xcodeproj */;
+			containerPortal = FBC2298D1B1DACB5009973D8 /* AFNetworking.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = FB5FF6B51B0DE9E400718BDD;
-			remoteInfo = AFNetworking;
-		};
-		2C890B681B1C2D9400CD7013 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 2C890B5B1B1C2CCC00CD7013 /* AFNetworking.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = FB5FF6B41B0DE9E400718BDD;
 			remoteInfo = AFNetworking;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		2C890B5B1B1C2CCC00CD7013 /* AFNetworking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AFNetworking.xcodeproj; path = /Users/dgoon/Works/xcode/azar/Modules/AzarDriver/../../submodules/AFNetworking/AFNetworking.xcodeproj; sourceTree = "<absolute>"; };
 		FB828D981B0DEACD00D4A2E2 /* AFJSONRPCClient.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AFJSONRPCClient.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB828D9C1B0DEACD00D4A2E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FB828DC01B0DEB3C00D4A2E2 /* AFJSONRPCClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFJSONRPCClient.h; sourceTree = "<group>"; };
 		FB828DC11B0DEB3C00D4A2E2 /* AFJSONRPCClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFJSONRPCClient.m; sourceTree = "<group>"; };
+		FBC2298D1B1DACB5009973D8 /* AFNetworking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AFNetworking.xcodeproj; path = ../AFNetworking/AFNetworking.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,25 +35,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2C890B671B1C2CF700CD7013 /* AFNetworking.framework in Frameworks */,
+				FBC229931B1DACBF009973D8 /* AFNetworking.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2C890B5C1B1C2CCC00CD7013 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				2C890B601B1C2CCC00CD7013 /* AFNetworking.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		FB828D8E1B0DEACD00D4A2E2 = {
 			isa = PBXGroup;
 			children = (
-				2C890B5B1B1C2CCC00CD7013 /* AFNetworking.xcodeproj */,
+				FBC2298D1B1DACB5009973D8 /* AFNetworking.xcodeproj */,
 				FB828D9A1B0DEACD00D4A2E2 /* AFJSONRPCClient */,
 				FB828D991B0DEACD00D4A2E2 /* Products */,
 			);
@@ -92,6 +77,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		FBC2298E1B1DACB5009973D8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FBC229921B1DACB5009973D8 /* AFNetworking.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -118,7 +111,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				2C890B691B1C2D9400CD7013 /* PBXTargetDependency */,
 			);
 			name = AFJSONRPCClient;
 			productName = AFJSONRPCClient;
@@ -151,8 +143,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 2C890B5C1B1C2CCC00CD7013 /* Products */;
-					ProjectRef = 2C890B5B1B1C2CCC00CD7013 /* AFNetworking.xcodeproj */;
+					ProductGroup = FBC2298E1B1DACB5009973D8 /* Products */;
+					ProjectRef = FBC2298D1B1DACB5009973D8 /* AFNetworking.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -163,11 +155,11 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		2C890B601B1C2CCC00CD7013 /* AFNetworking.framework */ = {
+		FBC229921B1DACB5009973D8 /* AFNetworking.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = AFNetworking.framework;
-			remoteRef = 2C890B5F1B1C2CCC00CD7013 /* PBXContainerItemProxy */;
+			remoteRef = FBC229911B1DACB5009973D8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -192,14 +184,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		2C890B691B1C2D9400CD7013 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = AFNetworking;
-			targetProxy = 2C890B681B1C2D9400CD7013 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		FB828DAC1B0DEACD00D4A2E2 /* Debug */ = {
