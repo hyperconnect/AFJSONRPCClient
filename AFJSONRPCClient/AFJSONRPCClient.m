@@ -251,6 +251,7 @@ typedef void (^AFJSONRPCProxyFailureBlock)(NSError *error);
     [invocation getArgument:&unsafeSuccess atIndex:3];
     [invocation getArgument:&unsafeFailure atIndex:4];
 
+    NSAssert(NO, @"Compiler is warning on this line, but I have no idea what to pass into...");
     [invocation invokeWithTarget:nil];
 
     __strong AFJSONRPCProxySuccessBlock strongSuccess = [unsafeSuccess copy];
