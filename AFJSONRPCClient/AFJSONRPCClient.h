@@ -97,13 +97,30 @@
 
  @param method The HTTP method. Must not be `nil`.
  @param parameters The parameters to encode into the request. Must be either an `NSDictionary` or `NSArray`.
+ @param workInBackground True if the request operation continues after the application transitions to background.
+ @param success A block object to be executed when the request operation finishes successfully. This block has no return value and takes two arguments: the request operation, and the response object created by the client response serializer.
+ @param failure A block object to be executed when the request operation finishes unsuccessfully, or that finishes successfully, but encountered an error while parsing the response data. This block has no return value and takes a two arguments: the request operation and the error describing the network or parsing error that occurred.
+ */
+- (void)invokeMethod:(NSString *)method
+      withParameters:(id)parameters
+    workInBackground:(BOOL)workInBackground
+             success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+             failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
+
+/**
+ Creates a request with the specified method and parameters, and enqueues a request operation for it.
+
+ @param method The HTTP method. Must not be `nil`.
+ @param parameters The parameters to encode into the request. Must be either an `NSDictionary` or `NSArray`.
  @param requestId The ID of the request.
+ @param workInBackground True if the request operation continues after the application transitions to background.
  @param success A block object to be executed when the request operation finishes successfully. This block has no return value and takes two arguments: the request operation, and the response object created by the client response serializer.
  @param failure A block object to be executed when the request operation finishes unsuccessfully, or that finishes successfully, but encountered an error while parsing the response data. This block has no return value and takes a two arguments: the request operation and the error describing the network or parsing error that occurred.
  */
 - (void)invokeMethod:(NSString *)method
       withParameters:(id)parameters
            requestId:(id)requestId
+    workInBackground:(BOOL)workInBackground
              success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
              failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
 
