@@ -96,18 +96,32 @@ static NSString * AFJSONRPCLocalizedErrorMessageForCode(NSInteger code) {
              success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
              failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
 {
+    [self invokeMethod:method withParameters:parameters workInBackground:FALSE success:success failure:failure];
+}
+
+- (void)invokeMethod:(NSString *)method
+      withParameters:(id)parameters
+    workInBackground:(BOOL)workInBackground
+             success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+             failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+{
     NSNumber* requestId = [self getAutoIncrementId];
-    [self invokeMethod:method withParameters:parameters requestId:requestId success:success failure:failure];
+    [self invokeMethod:method withParameters:parameters requestId:requestId workInBackground:workInBackground success:success failure:failure];
 }
 
 - (void)invokeMethod:(NSString *)method
       withParameters:(id)parameters
            requestId:(id)requestId
+    workInBackground:(BOOL)workInBackground
              success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
              failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
 {
     NSMutableURLRequest *request = [self requestWithMethod:method parameters:parameters requestId:requestId];
     AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:success failure:failure];
+
+    if (workInBackground)
+        [operation setShouldExecuteAsBackgroundTaskWithExpirationHandler:nil];
+
     [self.operationQueue addOperation:operation];
 }
 
