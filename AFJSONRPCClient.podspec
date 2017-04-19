@@ -7,12 +7,12 @@ Pod::Spec.new do |s|
   s.license = 'MIT'
   s.summary = 'A JSON-RPC client build on AFNetworking.'
   s.source = { :git => 'https://github.com/hyperconnect/AFJSONRPCClient.git',
-               :branch => 'hpcnt' }
+               :branch => 'cocoapods' }
   s.source_files = 'AFJSONRPCClient'
   s.requires_arc = true
 
   s.ios.deployment_target = '6.0'
   s.osx.deployment_target = '10.8'
 
-  s.dependency 'AFNetworking', '= 2.5.4'
+  s.dependency 'AFNetworking', '>= 2.5.4'
 end
