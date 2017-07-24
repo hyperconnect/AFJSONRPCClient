@@ -85,16 +85,16 @@ static NSString * AFJSONRPCLocalizedErrorMessageForCode(NSInteger code) {
 }
 
 - (void)invokeMethod:(NSString *)method
-             success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
-             failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+             success:(void (^)(NSURLResponse *response, id responseObject))success
+             failure:(void (^)(NSURLResponse *response, NSError *error))failure
 {
     [self invokeMethod:method withParameters:@[] success:success failure:failure];
 }
 
 - (void)invokeMethod:(NSString *)method
       withParameters:(id)parameters
-             success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
-             failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+             success:(void (^)(NSURLResponse *response, id responseObject))success
+             failure:(void (^)(NSURLResponse *response, NSError *error))failure
 {
     [self invokeMethod:method withParameters:parameters workInBackground:FALSE success:success failure:failure];
 }
@@ -102,8 +102,8 @@ static NSString * AFJSONRPCLocalizedErrorMessageForCode(NSInteger code) {
 - (void)invokeMethod:(NSString *)method
       withParameters:(id)parameters
     workInBackground:(BOOL)workInBackground
-             success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
-             failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+             success:(void (^)(NSURLResponse *response, id responseObject))success
+             failure:(void (^)(NSURLResponse *response, NSError *error))failure
 {
     NSNumber* requestId = [self getAutoIncrementId];
     [self invokeMethod:method withParameters:parameters requestId:requestId workInBackground:workInBackground success:success failure:failure];
@@ -113,16 +113,12 @@ static NSString * AFJSONRPCLocalizedErrorMessageForCode(NSInteger code) {
       withParameters:(id)parameters
            requestId:(id)requestId
     workInBackground:(BOOL)workInBackground
-             success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
-             failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+             success:(void (^)(NSURLResponse *response, id responseObject))success
+             failure:(void (^)(NSURLResponse *response, NSError *error))failure
 {
     NSMutableURLRequest *request = [self requestWithMethod:method parameters:parameters requestId:requestId];
-    AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:success failure:failure];
-
-    if (workInBackground)
-        [operation setShouldExecuteAsBackgroundTaskWithExpirationHandler:nil];
-
-    [self.operationQueue addOperation:operation];
+    NSURLSessionDataTask *task = [self URLSessionDataTaskWithRequest:request success:success failure:failure];
+    [task resume];
 }
 
 - (NSMutableURLRequest *)requestWithMethod:(NSString *)method
@@ -152,14 +148,21 @@ static NSString * AFJSONRPCLocalizedErrorMessageForCode(NSInteger code) {
 
 #pragma mark - AFHTTPClient
 
-- (AFHTTPRequestOperation *)HTTPRequestOperationWithRequest:(NSURLRequest *)urlRequest
-                                                    success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
-                                                    failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+- (NSURLSessionDataTask *)URLSessionDataTaskWithRequest:(NSURLRequest *)urlRequest
+                                                    success:(void (^)(NSURLResponse *response, id responseObject))success
+                                                    failure:(void (^)(NSURLResponse *response, NSError *error))failure
 {
-    return [super HTTPRequestOperationWithRequest:urlRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    return [self dataTaskWithRequest:urlRequest completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
         NSInteger code = 0;
         NSString *message = nil;
         id data = nil;
+
+        if (error) {
+            if (failure) {
+                failure(response, error);
+                return;
+            }
+        }
 
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             id result = responseObject[@"result"];
@@ -183,7 +186,7 @@ static NSString * AFJSONRPCLocalizedErrorMessageForCode(NSInteger code) {
                 }
             } else {
                 if (success) {
-                    success(operation, result);
+                    success(response, result);
                     return;
                 }
             }
@@ -203,11 +206,7 @@ static NSString * AFJSONRPCLocalizedErrorMessageForCode(NSInteger code) {
 
             NSError *error = [NSError errorWithDomain:AFJSONRPCErrorDomain code:code userInfo:userInfo];
 
-            failure(operation, error);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(operation, error);
+            failure(response, error);
         }
     }];
 }
@@ -271,11 +270,11 @@ typedef void (^AFJSONRPCProxyFailureBlock)(NSError *error);
     __strong AFJSONRPCProxySuccessBlock strongSuccess = [unsafeSuccess copy];
     __strong AFJSONRPCProxyFailureBlock strongFailure = [unsafeFailure copy];
 
-    [self.client invokeMethod:RPCMethod withParameters:arguments success:^(__unused AFHTTPRequestOperation *operation, id responseObject) {
+    [self.client invokeMethod:RPCMethod withParameters:arguments success:^(__unused NSURLResponse *response, id responseObject) {
         if (strongSuccess) {
             strongSuccess(responseObject);
         }
-    } failure:^(__unused AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(__unused NSURLResponse *response, NSError *error) {
         if (strongFailure) {
             strongFailure(error);
         }

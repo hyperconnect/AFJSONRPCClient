@@ -28,7 +28,7 @@
  
  @see http://www.jsonrpc.org/specification
  */
-@interface AFJSONRPCClient : AFHTTPRequestOperationManager {
+@interface AFJSONRPCClient : AFHTTPSessionManager {
     NSInteger autoIncrementId;
 }
 
@@ -76,8 +76,8 @@
  @param failure A block object to be executed when the request operation finishes unsuccessfully, or that finishes successfully, but encountered an error while parsing the response data. This block has no return value and takes a two arguments: the request operation and the error describing the network or parsing error that occurred.
  */
 - (void)invokeMethod:(NSString *)method
-             success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
-             failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
+             success:(void (^)(NSURLResponse *response, id responseObject))success
+             failure:(void (^)(NSURLResponse *response, NSError *error))failure;
 
 /**
  Creates a request with the specified method and parameters, and enqueues a request operation for it.
@@ -89,8 +89,8 @@
  */
 - (void)invokeMethod:(NSString *)method
       withParameters:(id)parameters
-             success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
-             failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
+             success:(void (^)(NSURLResponse *response, id responseObject))success
+             failure:(void (^)(NSURLResponse *response, NSError *error))failure;
 
 /**
  Creates a request with the specified method and parameters, and enqueues a request operation for it.
@@ -104,8 +104,8 @@
 - (void)invokeMethod:(NSString *)method
       withParameters:(id)parameters
     workInBackground:(BOOL)workInBackground
-             success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
-             failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
+             success:(void (^)(NSURLResponse *response, id responseObject))success
+             failure:(void (^)(NSURLResponse *response, NSError *error))failure;
 
 /**
  Creates a request with the specified method and parameters, and enqueues a request operation for it.
@@ -121,8 +121,8 @@
       withParameters:(id)parameters
            requestId:(id)requestId
     workInBackground:(BOOL)workInBackground
-             success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
-             failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
+             success:(void (^)(NSURLResponse *response, id responseObject))success
+             failure:(void (^)(NSURLResponse *response, NSError *error))failure;
 
 ///----------------------
 /// @name Method Proxying
