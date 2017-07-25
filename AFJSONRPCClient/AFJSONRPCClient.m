@@ -69,7 +69,7 @@ static NSString * AFJSONRPCLocalizedErrorMessageForCode(NSInteger code) {
 - (id)initWithEndpointURL:(NSURL *)URL {
     NSParameterAssert(URL);
 
-    self = [super initWithBaseURL:URL];
+    self = [super initWithBaseURL:URL sessionConfiguration:[NSURLSessionConfiguration ephemeralSessionConfiguration]];
     if (!self) {
         return nil;
     }
