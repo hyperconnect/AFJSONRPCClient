@@ -61,9 +61,8 @@ static NSString * AFJSONRPCLocalizedErrorMessageForCode(NSInteger code) {
     return [[self alloc] initWithEndpointURL:URL];
 }
 
-- (NSNumber*) getAutoIncrementId {
-    autoIncrementId += 1;
-    return [[NSNumber alloc] initWithInteger:autoIncrementId];
+- (NSNumber*) getNextId {
+    return [[NSNumber alloc] initWithUnsignedInt:arc4random()];
 }
 
 - (id)initWithEndpointURL:(NSURL *)URL {
@@ -105,7 +104,7 @@ static NSString * AFJSONRPCLocalizedErrorMessageForCode(NSInteger code) {
              success:(void (^)(NSURLResponse *response, id responseObject))success
              failure:(void (^)(NSURLResponse *response, NSError *error))failure
 {
-    NSNumber* requestId = [self getAutoIncrementId];
+    NSNumber* requestId = [self getNextId];
     [self invokeMethod:method withParameters:parameters requestId:requestId workInBackground:workInBackground success:success failure:failure];
 }
 
@@ -134,7 +133,7 @@ static NSString * AFJSONRPCLocalizedErrorMessageForCode(NSInteger code) {
     NSAssert([parameters isKindOfClass:[NSDictionary class]] || [parameters isKindOfClass:[NSArray class]], @"Expect NSArray or NSDictionary in JSONRPC parameters");
 
     if (!requestId) {
-        requestId = [self getAutoIncrementId];
+        requestId = [self getNextId];
     }
 
     NSMutableDictionary *payload = [NSMutableDictionary dictionary];
