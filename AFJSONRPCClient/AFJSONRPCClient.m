@@ -68,7 +68,9 @@ static NSString * AFJSONRPCLocalizedErrorMessageForCode(NSInteger code) {
 - (id)initWithEndpointURL:(NSURL *)URL {
     NSParameterAssert(URL);
 
+    // 참고: https://stackoverflow.com/questions/27290234/how-to-set-cookieacceptpolicy-for-ephemeral-nsurlsession
     // iOS8에서 ephemeral 설정을 사용할 경우 connection간 cookie정보가 공유되지 않는 문제가 있어 default 설정을 사용
+    // Apple Bug #: 19031101
     if ([[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:(NSOperatingSystemVersion){.majorVersion = 9, .minorVersion = 0, .patchVersion = 0}]) {
         self = [super initWithBaseURL:URL sessionConfiguration:[NSURLSessionConfiguration ephemeralSessionConfiguration]];
     } else {
